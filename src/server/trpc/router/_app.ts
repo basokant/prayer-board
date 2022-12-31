@@ -1,8 +1,10 @@
 import { router } from "../trpc";
-import { exampleRouter } from "./example";
+import { prayerRequestRouter } from "./prayerRequest";
+import { prayerBoardRouter}  from "./prayerBoard";
 
 export const appRouter = router({
-  example: exampleRouter,
+    prayerRequest: prayerRequestRouter,
+    prayerBoard: prayerBoardRouter
 });
 
 // export type definition of API
