@@ -1,7 +1,7 @@
 import { trpc } from "../utils/trpc";
 
 const AllStats = () => {
-  const { data } = trpc.prayerBoard.getStats.useQuery({});
+  const { data } = trpc.prayerBoard.getStats.useQuery();
 
   if (!data) return (<div>Loading...</div>)
 

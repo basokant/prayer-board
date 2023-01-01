@@ -2,13 +2,7 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
-const slugify = (str: String)=>
-  str
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+import slugify from '../../../helpers/slugify'
 
 export const prayerBoardRouter = router({
     hello: publicProcedure
@@ -44,8 +38,16 @@ export const prayerBoardRouter = router({
             })
         }),
 
+    getAllSlugs: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.prisma.prayerBoard.findMany({
+                select: {
+                    slug: true,
+                }
+            })
+        }),
+
     getStats: publicProcedure
-        .input(z.object({}))
         .query(({ ctx }) => {
             const prayerBoardCount = ctx.prisma.prayerBoard.aggregate({
                 _count: {
@@ -73,6 +75,10 @@ export const prayerBoardRouter = router({
                     name: input.name,
                     slug: slugify(input.name),
                     password: input.password,
+                },
+                select: {
+                    slug: true,
+                    name: true,
                 }
             })
         }),

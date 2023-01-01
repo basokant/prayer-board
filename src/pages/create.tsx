@@ -1,18 +1,54 @@
 import { type NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 import { trpc } from "../utils/trpc";
 
+import slugify from "../helpers/slugify";
+
 const CreateBoard: NextPage = () => {
+
+  const router = useRouter();
 
   const [boardName, setBoardName] = useState<string>("");
   const [boardPassword, setBoardPassword] = useState<string>("");
 
+  const allBoardSlugs = trpc.prayerBoard.getAllSlugs.useQuery();
   const createBoard = trpc.prayerBoard.create.useMutation();
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(boardName, boardPassword)
+
+    if (!allBoardSlugs.isLoading && !allBoardSlugs.isError && allBoardSlugs.data) {
+      const boardSlugs = allBoardSlugs.data.map((board) => board.slug);
+      console.log(boardSlugs);
+
+      const slug = slugify(boardName);
+      if (boardSlugs.includes(slug)) {
+      alert("Board name already taken. Please try another name.");
+        return;
+      }
+
+      createBoard.mutate({ name: boardName, password: boardPassword })
+
+      if (createBoard.isError) {
+        alert("Error creating board. Please try again.");
+        return;
+      }
+
+    } else if (allBoardSlugs.isError) 
+      console.log(allBoardSlugs.error);
+  }
+
+  if (createBoard.isSuccess) {
+    const slug = createBoard.data.slug;
+    router.push(`/board/${slug}`);
+  }
 
   return (
     <>
@@ -24,40 +60,35 @@ const CreateBoard: NextPage = () => {
       <main className="flex flex-col align-middle justify-center min-h-screen bg-lightCyan font-Poppins lg:px-20 px-2 text-darkblue">
         <Navbar />
         <div className="flex flex-col align-center justify-center flex-1 px-[10vw] sm:px-[25vw]">
-            <h1 className="text-right flex-grow-1 p-3 mb-3 text-3xl md:text-4xl font-semibold rounded-lg border-4 border-darkblue">Create a Board.</h1>
-
-            <form 
-              className="flex flex-col gap-4 font-medium"
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log(boardName, boardPassword)
-
-                createBoard.mutate({ name: boardName, password: boardPassword })
-                // Take user to the new board page
-              }}
-            >
-              <label htmlFor="BoardName">Board Name <span className="text-turquise">*</span></label>
-              <input className="p-3 px-4 rounded-md outline-turquise" id="BoardName" name="BoardName" type="text" 
-                placeholder="What's the name of your community?" required autoFocus
-                value={boardName}
-                onChange={(e) => setBoardName(e.target.value)}
-              />
-              <label htmlFor="BoardName">Board Password <span className="text-turquise">*</span></label>
-              <input className="p-3 px-4 rounded-md outline-turquise" id="BoardPassword" name="BoardPassword" type="text" 
-                placeholder="A password for the board to be used by the community." required
-                value={boardPassword}
-                onChange={(e) => setBoardPassword(e.target.value)}
-              />
-              <div className="flex justify-end my-4">
-                <input 
-                  className="text-xl p-2 px-4 bg-blue text-lightCyan rounded-full hover:bg-turquise transition-all" 
-                  type="submit"
-                  value="Create Board"
-                >
-                </input>
-              </div>
-            </form>
+          {createBoard.isLoading && <div className="text-center">Loading...</div>}
+          <h1 className="text-right flex-grow-1 p-3 mb-3 text-3xl md:text-4xl font-semibold rounded-lg border-4 border-darkblue">Create a Board.</h1>
+          <form 
+            className="flex flex-col gap-4 font-medium"
+            onSubmit={submitHandler}
+          >
+            <label htmlFor="BoardName">Board Name <span className="text-turquise">*</span></label>
+            <input className="p-3 px-4 rounded-md outline-turquise" id="BoardName" name="BoardName" type="text" 
+              placeholder="What's the name of your community?" required autoFocus
+              value={boardName}
+              onChange={(e) => setBoardName(e.target.value)}
+            />
+            <label htmlFor="BoardName">Board Password <span className="text-turquise">*</span></label>
+            <input className="p-3 px-4 rounded-md outline-turquise" id="BoardPassword" name="BoardPassword" type="text" 
+              placeholder="A password for the board to be used by the community." required
+              value={boardPassword}
+              onChange={(e) => setBoardPassword(e.target.value)}
+            />
+            <div className="flex justify-end my-4">
+              <input 
+                className="text-xl p-2 px-4 bg-blue text-lightCyan rounded-full outline-turquise hover:bg-turquise transition-all" 
+                type="submit"
+                value="Create Board"
+              >
+              </input>
+            </div>
+          </form>
         </div>
+        <Footer />
       </main>
     </>
   );
