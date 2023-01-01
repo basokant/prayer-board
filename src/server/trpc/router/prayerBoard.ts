@@ -36,6 +36,27 @@ export const prayerBoardRouter = router({
             })
         }),
 
+    getStats: publicProcedure
+        .input(z.object({}))
+        .query(({ ctx }) => {
+            const prayerBoardCount = ctx.prisma.prayerBoard.aggregate({
+                _count: {
+                    id: true,
+                },
+            })
+            
+            const prayerRequestStats = ctx.prisma.prayerRequest.aggregate({
+                _sum: {
+                    numPrayedFor: true,
+                },
+                _count: {
+                    id: true,
+                }
+            })
+
+            return Promise.all([prayerBoardCount, prayerRequestStats])
+        }),
+
     create: publicProcedure
         .input(z.object({ name: z.string(), slug: z.string() }))
         .mutation(({ ctx, input }) => {

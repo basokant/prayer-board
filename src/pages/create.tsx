@@ -4,11 +4,11 @@ import Link from "next/link";
 
 import Navbar from "../components/Navbar";
 import PrayingPerson from "../components/PrayingPerson";
-import AllStats from "../components/AllStats";
 
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const hello = trpc.prayerBoard.hello.useQuery({ name: "Ben" })
 
   return (
     <>
@@ -30,9 +30,7 @@ const Home: NextPage = () => {
               <Link className="rounded-full bg-ocean text-lightCyan p-1.5 px-5 text-center" href="/find-board">Visit Board</Link>
               <Link className="rounded-full bg-blue text-lightCyan p-1.5 px-5 text-center" href="/create">Create Board</Link>
             </div>
-            <AllStats />
           </div>
-          
         </div>
       </main>
     </>
