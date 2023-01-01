@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "../components/Navbar";
 import PrayingPerson from "../components/PrayingPerson";
 import AllStats from "../components/AllStats";
+import Footer from "../components/Footer";
 
 const Home: NextPage = () => {
 
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
           </div>
           
         </div>
+        <Footer />
       </main>
     </>
   );
