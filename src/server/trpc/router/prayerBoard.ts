@@ -38,6 +38,19 @@ export const prayerBoardRouter = router({
             })
         }),
 
+    getAll: publicProcedure
+        .query(({ ctx }) => {
+            return ctx.prisma.prayerBoard.findMany({
+                select: {
+                    slug: true,
+                    name: true,
+                    _count: {
+                        select: { prayerRequests: true }
+                    }
+                }
+            })
+        }),
+
     getAllSlugs: publicProcedure
         .query(({ ctx }) => {
             return ctx.prisma.prayerBoard.findMany({
