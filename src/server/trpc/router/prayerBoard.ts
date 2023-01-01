@@ -2,6 +2,14 @@ import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
 
+const slugify = (str: String)=>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
 export const prayerBoardRouter = router({
     hello: publicProcedure
         .input(z.object({ name: z.string() }))
@@ -58,12 +66,13 @@ export const prayerBoardRouter = router({
         }),
 
     create: publicProcedure
-        .input(z.object({ name: z.string(), slug: z.string() }))
+        .input(z.object({ name: z.string(), password: z.string() }))
         .mutation(({ ctx, input }) => {
             return ctx.prisma.prayerBoard.create({
                 data: {
                     name: input.name,
-                    slug: input.slug
+                    slug: slugify(input.name),
+                    password: input.password,
                 }
             })
         }),

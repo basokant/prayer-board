@@ -24,6 +24,7 @@ model PrayerBoard {
   id             Int             @id @default(autoincrement())
   slug           String          @unique
   name           String
+  password       String
   createdAt      DateTime        @default(now())
   prayerRequests PrayerRequest[]
 }

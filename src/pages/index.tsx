@@ -6,8 +6,6 @@ import Navbar from "../components/Navbar";
 import PrayingPerson from "../components/PrayingPerson";
 import AllStats from "../components/AllStats";
 
-import { trpc } from "../utils/trpc";
-
 const Home: NextPage = () => {
 
   return (
