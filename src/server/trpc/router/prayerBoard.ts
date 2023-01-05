@@ -36,6 +36,7 @@ export const prayerBoardRouter = router({
                             message: true,
                             author: true,
                             numPrayedFor: true,
+                            createdAt: true,
                         }
                     }
                 }

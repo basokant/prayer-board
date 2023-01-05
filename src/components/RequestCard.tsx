@@ -1,6 +1,9 @@
 import Link from "next/link"
 import { useState } from "react";
+
 import LogoMark from "../../public/logomark.svg"
+
+import ReactTimeAgo from 'react-time-ago';
 
 import { trpc } from "../utils/trpc";
 
@@ -9,10 +12,11 @@ type RequestProps = {
   message: string;
   author: string;
   numPrayedFor: number;
+  date: Date;
   refetch: () => void;
 }
 
-const RequestCard = ({ id, message, author, numPrayedFor, refetch }: RequestProps) => {
+const RequestCard = ({ id, message, author, numPrayedFor, date, refetch }: RequestProps) => {
 
   const prayForRequest = trpc.prayerRequest.updateNumPrayerFor.useMutation({
     onSuccess: () => refetch()
@@ -23,7 +27,9 @@ const RequestCard = ({ id, message, author, numPrayedFor, refetch }: RequestProp
     <div className="flex flex-col p-7 outline-gray-800 outline outline-1 rounded-xl">
       <p className="flex-1 pb-3">{message}</p>
       <div className="flex items-center">
-        <span className="font-semibold flex-1">~ {author}</span>
+        <div className="flex-1">
+          <span className="font-semibold text-cyan-600">~ {author}</span> • <ReactTimeAgo date={date} locale="en-US" timeStyle="twitter" />
+        </div>
         <button
           className="flex items-center gap-2 bg-teal-800 hover:bg-teal-700 p-1 px-3 text-slate-50 font-semibold rounded-lg transition-colors"
           onClick={() => {

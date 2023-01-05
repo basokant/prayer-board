@@ -2,6 +2,12 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
+import TimeAgo from 'javascript-time-ago'
+
+import en from 'javascript-time-ago/locale/en.json'
+
+TimeAgo.addDefaultLocale(en)
+
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import RequestCard from "../../../components/RequestCard";
@@ -151,6 +157,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                 message={prayerRequest.message}
                 author={prayerRequest.author}
                 numPrayedFor={prayerRequest.numPrayedFor}
+                date={prayerRequest.createdAt}
                 refetch={boardQuery.refetch}
               />
             ))}
