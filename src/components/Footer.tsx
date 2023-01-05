@@ -2,12 +2,14 @@ import AllStats from "./AllStats";
 
 const Footer = () => {
   return (
-    <div className="font-medium flex items-center justify-between flex-wrap bg-lightCyan p-4 flex-col gap-2 lg:flex-row">
+    <div className="font-medium flex items-center justify-between flex-wrap py-4 lg:px-20 px-2 flex-col gap-2 lg:flex-row">
       <div>
         Made with ❤️ and 🙏 by <span>
           <a 
             href="https://basokant.com/"
-            className="underline text-blue hover:text-turquise transition-colors"
+            className="underline text-cyan-800 hover:text-cyan-700 transition-colors"
+            target="_blank"
+            rel="noreferrer noopener"
           >
             Ben Asokanthan
           </a>

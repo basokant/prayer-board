@@ -25,6 +25,7 @@ model PrayerBoard {
   slug           String          @unique
   name           String
   password       String
+  numMembers     Int             @default(0)
   createdAt      DateTime        @default(now())
   prayerRequests PrayerRequest[]
 }

@@ -15,12 +15,19 @@ export const prayerRequestRouter = router({
                             slug: input.boardSlug
                         }
                     }
+                },
+                select: {
+                    id: true,
+                    message: true,
+                    author: true,
+                    numPrayedFor: true,
+                    createdAt: true,
                 }
             })
         }),
     
     updateNumPrayerFor: publicProcedure
-        .input(z.object({ id: z.number(), prayedFor: z.boolean() }))
+        .input(z.object({ id: z.number() }))
         .mutation(({ ctx, input }) => {
             return ctx.prisma.prayerRequest.update({
                 where: {
@@ -28,7 +35,7 @@ export const prayerRequestRouter = router({
                 },
                 data: {
                     numPrayedFor: {
-                        increment: input.prayedFor ? 1 : -1
+                        increment: 1
                     }
                 }
             })

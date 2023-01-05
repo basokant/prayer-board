@@ -13,7 +13,7 @@ export const prayerBoardRouter = router({
             }
         }),
 
-    getBoardBySlug: publicProcedure
+    bySlug: publicProcedure
         .input(z.object({ slug: z.string() }))
         .query(({ ctx, input }) => {
             return ctx.prisma.prayerBoard.findUnique({
@@ -23,6 +23,10 @@ export const prayerBoardRouter = router({
                 select: {
                     slug: true,
                     name: true,
+                    numMembers: true,
+                    _count: {
+                        select: { prayerRequests: true }
+                    },
                     prayerRequests: {
                         orderBy: {
                             createdAt: 'desc'
@@ -44,6 +48,7 @@ export const prayerBoardRouter = router({
                 select: {
                     slug: true,
                     name: true,
+                    numMembers: true,
                     _count: {
                         select: { prayerRequests: true }
                     }
@@ -95,4 +100,39 @@ export const prayerBoardRouter = router({
                 }
             })
         }),
+
+    join: publicProcedure
+        .input(z.object({ slug: z.string(), password: z.string()} ))
+        .mutation(async ({ ctx, input }) => {
+            const board = await ctx.prisma.prayerBoard.findUnique({
+                where: {
+                    slug: input.slug,
+                },
+                select: {
+                    password: true,
+                }
+            })
+
+            if (!board) {
+                throw new Error('Board not found')
+            }
+
+            if (board.password !== input.password) {
+                throw new Error('Incorrect password')
+            }
+
+            return ctx.prisma.prayerBoard.update({
+                where: {
+                    slug: input.slug,
+                },
+                data: {
+                    numMembers: {
+                        increment: 1,
+                    }
+                },
+                select: {
+                    numMembers: true,
+                }
+            })
+        })
 })

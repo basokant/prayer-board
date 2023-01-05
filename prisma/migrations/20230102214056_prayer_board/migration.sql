@@ -17,6 +17,7 @@ CREATE TABLE "PrayerBoard" (
     "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "numMembers" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "PrayerBoard_pkey" PRIMARY KEY ("id")
 );
