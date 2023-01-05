@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between flex-wrap py-2 lg:px-20 px-2 flex-col gap-2 lg:flex-row outline outline-1 outline-gray-800">
+    <nav className="sticky top-0 flex items-center justify-between flex-wrap py-2 lg:px-20 px-2 flex-col gap-2 lg:flex-row outline outline-1 outline-gray-800 bg-gray-900 z-10 backdrop-filter backdrop-blur-lg bg-opacity-30">
       <Link href="/">
         <div className="flex items-center justify-center">
           <img src="/logomark.svg" alt="PrayerBoard Logomark" className="h-10 md:h-14" draggable="false"/>
