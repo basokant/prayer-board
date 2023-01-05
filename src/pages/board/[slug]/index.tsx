@@ -7,7 +7,7 @@ import Footer from "../../../components/Footer";
 import RequestCard from "../../../components/RequestCard";
 import BoardCard from "../../../components/BoardCard";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
@@ -32,10 +32,13 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     }
   );
 
+  const { data } = boardQuery;
+
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [requestAuthor, setRequestAuthor] = useState<string>("");
+  const [showRequestForm, setShowRequestForm] = useState<boolean>(false);
 
-  const { data } = boardQuery;
+  const reveal = () => setShowRequestForm(!showRequestForm);
 
   const requestFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,6 +46,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: requestAuthor });
     setRequestMessage("");
     setRequestAuthor("");
+    reveal();
   }
 
   return (
@@ -66,46 +70,61 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               />
             }
           </div>
-          <form 
-            className="flex flex-col gap-6 py-6"
-            onSubmit={requestFormHandler}
-          >
-            <div>
-              <label className="font-medium px-5" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
-              <textarea 
-                rows={4}
-                className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
-                placeholder="What do you need prayer for?"
-                name="message"
-                value={requestMessage}
-                onChange={(e) => setRequestMessage(e.target.value)}
-                required
-              />
-            </div>
-            <div className="flex items-center gap-5">
-              <div className="flex-1">
-                <label className="font-medium px-5" htmlFor="name">Author (not required)</label>
-                <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-teal-500" type="text" 
-                    placeholder="What is your name?"
-                    name="name"
-                    value={requestAuthor}
-                    onChange={(e) => setRequestAuthor(e.target.value)}
-                    required
-                    disabled={createPrayerRequest.isLoading}
+
+          {
+            showRequestForm ?
+            <form 
+              className="flex flex-col gap-6 py-6"
+              onSubmit={requestFormHandler}
+            >
+              <div>
+                <label className="font-medium px-5" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
+                <textarea 
+                  rows={4}
+                  className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
+                  placeholder="What do you need prayer for?"
+                  name="message"
+                  value={requestMessage}
+                  onChange={(e) => setRequestMessage(e.target.value)}
+                  required
                 />
               </div>
-              <input 
-                className="text-md p-2 px-4 bg-transparent text-cyan-500 hover:text-cyan-400 transition-colors" 
-                type="button"
-                value="Cancel"
-              />
-              <input 
-                className="text-md p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-colors" 
-                type="submit"
-                value="Request Prayer"
-              />
+              <div className="flex items-center gap-5">
+                <div className="flex-1">
+                  <label className="font-medium px-5" htmlFor="name">Author (not required)</label>
+                  <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-teal-500" type="text" 
+                      placeholder="What is your name?"
+                      name="name"
+                      value={requestAuthor}
+                      onChange={(e) => setRequestAuthor(e.target.value)}
+                      required
+                      disabled={createPrayerRequest.isLoading}
+                  />
+                </div>
+                <input 
+                  className="text-md p-2 px-4 bg-transparent text-cyan-500 hover:text-cyan-400 transition-colors" 
+                  type="button"
+                  value="Cancel"
+                  onClick={reveal}
+                />
+                <input 
+                  className="text-md p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-colors" 
+                  type="submit"
+                  value="Request Prayer"
+                />
+              </div>
+            </form>
+            :
+            <div className="flex items-center pb-6">
+              <button 
+                className="text-md p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-colors"
+                onClick={reveal}
+              >
+                Request Prayer
+              </button>
             </div>
-          </form>
+          }
+
           <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]">
             {data && data.prayerRequests.map((prayerRequest) => (
               <RequestCard 
