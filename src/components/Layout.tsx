@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => (
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
     transition={{ duration: 0.5 }}
-    className="flex flex-col align-middle min-h-screen bg-gray-900 font-Poppins text-gray-300"
+    className="flex flex-col justify-start min-h-screen bg-gray-900 font-Poppins text-gray-300"
   >
     <StarsContainer/>
     {children}

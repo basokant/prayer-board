@@ -24,6 +24,7 @@ export const prayerBoardRouter = router({
                     slug: true,
                     name: true,
                     numMembers: true,
+                    password: true,
                     _count: {
                         select: { prayerRequests: true }
                     },

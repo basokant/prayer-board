@@ -4,6 +4,8 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en.json'
 TimeAgo.addDefaultLocale(en)
 
+import { Toaster, toast } from 'react-hot-toast';
+
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import RequestCard from "../../../components/RequestCard";
@@ -37,7 +39,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   const boardQuery = trpc.prayerBoard.bySlug.useQuery(
     {slug: slug},
     {
-      refetchInterval: 4000
+      refetchInterval: 5000
     }
   );
 
@@ -63,12 +65,11 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     e.preventDefault();
 
     createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: requestAuthor });
-    setRequestMessage("");
-    setRequestAuthor("");
-
     
     setTimeout(() => {
       reveal();
+      setRequestMessage("");
+      setRequestAuthor("");
     }, 600)
     
   }
@@ -124,7 +125,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               onSubmit={requestFormHandler}
             >
               <div>
-                <label className="font-medium px-5" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
+                <label className="font-medium" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
                 <textarea 
                   rows={4}
                   className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
@@ -137,7 +138,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               </div>
               <div className="flex items-center gap-5">
                 <div className="flex-1">
-                  <label className="font-medium px-5" htmlFor="name">Author (not required)</label>
+                  <label className="font-medium" htmlFor="name">Author (not required)</label>
                   <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-teal-500" type="text" 
                       placeholder="What is your name?"
                       name="name"
@@ -161,12 +162,24 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               </div>
             </form>
             :
-            <div className="flex items-center pb-6">
+            <div className="flex gap-3 items-center pb-6">
               <button 
                 className="text-md p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-colors"
                 onClick={reveal}
               >
                 Request Prayer
+              </button>
+              <button 
+                className="text-md p-2 px-4 text-teal-500 rounded-full outline outline-1 outline-teal-500 hover:text-teal-200 hover:outline-teal-200 transition-colors"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!\nLink: ${window.location.origin}/board/${slug}\nPassword: ${data?.password}`
+                  )
+
+                  toast.success("🙏 Copied invite to clipboard!");
+                }}
+              >
+                Copy Invite
               </button>
             </div>
           }
@@ -213,6 +226,25 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               )
             }
           </div>
+        </div>
+        <div>
+          <Toaster 
+            position="bottom-center"
+            reverseOrder={true}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#374151',
+                color: '#D1D5DA'
+              },
+              success: {
+                iconTheme: {
+                  primary: '#0C9488',
+                  secondary: '#E4E7EB'
+                }
+              }
+            }}
+          />
         </div>
         <Footer />
       </Layout>

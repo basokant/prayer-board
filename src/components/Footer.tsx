@@ -7,7 +7,7 @@ const Footer = () => {
         Made with ❤️ and 🙏 by <span>
           <a 
             href="https://basokant.com/"
-            className="underline text-cyan-800 hover:text-cyan-700 transition-colors"
+            className="underline text-cyan-600 hover:text-cyan-500 transition-colors"
             target="_blank"
             rel="noreferrer noopener"
           >
