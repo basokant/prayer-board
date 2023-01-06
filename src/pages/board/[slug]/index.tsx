@@ -104,7 +104,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
       </Head>
       <Layout>
         <Navbar />
-        <div className="lg:px-36 xl:px-42 px-7 pb-10" ref={parentRef}>
+        <div className="flex-1 lg:px-36 xl:px-42 px-7 pb-10" ref={parentRef}>
           {/* {JSON.stringify(board)} */}
           <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
             { data &&
@@ -175,11 +175,11 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
             decorative
             orientation="horizontal"
           />
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4 py-1">
             <SelectMenu label="Sort By" options={sortByOptions} selectedValue={selectedSortByOption} onChange={setSelectedSortByOption}/>
             <SelectMenu label="Order" options={orderOptions} selectedValue={selectedOrderOption} onChange={setSelectedOrderOption} />
           </div>
-          <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParentRef}>
+          <div className="flex-1 py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParentRef}>
             {data && data.prayerRequests
             .sort((a,b) => {
               if (selectedSortByOption === "Number of Prayers") {
@@ -207,6 +207,11 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                 refetch={boardQuery.refetch}
               />
             ))}
+            {
+              data && data.prayerRequests.length === 0 && (
+                <span>No prayer requests yet.</span>
+              )
+            }
           </div>
         </div>
         <Footer />

@@ -12,7 +12,7 @@ export default function SelectMenu({label, options, onChange, selectedValue}: Se
   return (
     <Listbox
       as="div"
-      className="py-2 w-48"
+      className="py-1 w-48"
       style={{ position: "relative", zIndex: 5 }}
       value={selectedValue}
       onChange={onChange}
