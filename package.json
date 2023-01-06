@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.5",
+    "@headlessui/react": "^1.7.7",
+    "@headlessui/tailwindcss": "^0.1.2",
+    "@heroicons/react": "^2.0.13",
     "@prisma/client": "^4.8.0",
+    "@radix-ui/react-icons": "^1.1.1",
+    "@radix-ui/react-select": "^1.1.2",
     "@radix-ui/react-separator": "^1.0.1",
     "@tanstack/react-query": "^4.16.0",
     "@trpc/client": "^10.0.0",

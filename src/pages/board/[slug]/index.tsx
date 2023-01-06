@@ -12,6 +12,8 @@ import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
 import RequestCard from "../../../components/RequestCard";
 import BoardCard from "../../../components/BoardCard";
+import Layout from "../../../components/Layout";
+import SelectMenu from "../../../components/SelectMenu";
 
 import * as Separator from '@radix-ui/react-separator';
 import React, { useEffect, useRef, useState } from "react";
@@ -23,7 +25,9 @@ import { createContextInner } from '../../../server/trpc/context';
 import { appRouter } from '../../../server/trpc/router/_app';
 import superjson from 'superjson';
 import { trpc } from "../../../utils/trpc";
-import Layout from "../../../components/Layout";
+
+const sortByOptions = ["Time Created", "Number of Prayers"];
+const orderOptions = ["Descending", "Ascending"];
 
 export default function Board(props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
@@ -46,6 +50,9 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   const [requestMessage, setRequestMessage] = useState<string>("");
   const [requestAuthor, setRequestAuthor] = useState<string>("");
   const [showRequestForm, setShowRequestForm] = useState<boolean>(false);
+  const [selectedSortByOption, setSelectedSortByOption] = useState(sortByOptions[0]);
+  const [selectedOrderOption, setSelectedOrderOption] = useState(orderOptions[0]);
+
   const parentRef = useRef(null);
   const requestsParentRef = useRef(null);
 
@@ -69,6 +76,28 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     }, 600)
     
   }
+
+  useEffect(() => {
+    if (data && data.prayerRequests && data.prayerRequests.length > 1) {
+      data.prayerRequests.sort((a,b) => {
+        if (selectedSortByOption === "Time Created") {
+          if (selectedOrderOption === "Descending") {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          } else {
+            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          }
+        } else if (selectedSortByOption === "Number of Prayers") {
+          if (selectedOrderOption === "Descending") {
+            return b.numPrayedFor - a.numPrayedFor;
+          } else {
+            return a.numPrayedFor - b.numPrayedFor;
+          }
+        }
+
+        return 1;
+      })
+    }
+  }, [data, selectedSortByOption, selectedOrderOption])
 
   return (
     <>
@@ -150,8 +179,28 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
             decorative
             orientation="horizontal"
           />
+          <div className="flex gap-4">
+            <SelectMenu label="Sort By" options={sortByOptions} selectedValue={selectedSortByOption} onChange={setSelectedSortByOption}/>
+            <SelectMenu label="Order" options={orderOptions} selectedValue={selectedOrderOption} onChange={setSelectedOrderOption} />
+          </div>
           <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParentRef}>
-            {data && data.prayerRequests.map((prayerRequest) => (
+            {data && data.prayerRequests
+            .sort((a,b) => {
+              if (selectedSortByOption === "Number of Prayers") {
+                if (selectedOrderOption === "Descending") {
+                  return b.numPrayedFor - a.numPrayedFor;
+                } else {
+                  return a.numPrayedFor - b.numPrayedFor;
+                }
+              } else {
+                if (selectedOrderOption === "Descending") {
+                  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                } else {
+                  return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                }
+              }
+            })
+            .map((prayerRequest) => (
               <RequestCard 
                 id={prayerRequest.id}
                 message={prayerRequest.message}
