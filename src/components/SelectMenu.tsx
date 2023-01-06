@@ -6,14 +6,15 @@ type SelectMenuProps = {
   options: string[];
   onChange: (value: string) => void;
   selectedValue: string | undefined;
+  zIndex: number;
 }
 
-export default function SelectMenu({label, options, onChange, selectedValue}: SelectMenuProps ) {
+export default function SelectMenu({label, options, onChange, selectedValue, zIndex}: SelectMenuProps ) {
   return (
     <Listbox
       as="div"
       className="py-1 w-48"
-      style={{ position: "relative", zIndex: 5 }}
+      style={{ position: "relative", zIndex: zIndex }}
       value={selectedValue}
       onChange={onChange}
     >

@@ -5,6 +5,7 @@ import en from 'javascript-time-ago/locale/en.json'
 TimeAgo.addDefaultLocale(en)
 
 import { Toaster, toast } from 'react-hot-toast';
+import { LineWave } from 'react-loader-spinner';
 
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/Footer";
@@ -33,13 +34,26 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
 
   const createPrayerRequest = trpc.prayerRequest.create.useMutation(
     {
-      onSuccess: () => boardQuery.refetch()
+      onSuccess: () => {
+        reveal();
+        setRequestMessage("");
+        setRequestAuthor("");
+        toast.success("Prayer request sent! 🙏");
+        boardQuery.refetch()
+      },
+      onError: (error) => {
+        reveal();
+        setRequestMessage("");
+        setRequestAuthor("");
+        console.log(error, "error handler")
+        toast.error("Something went wrong. Please try again later.");
+      }
     }
   );
   const boardQuery = trpc.prayerBoard.bySlug.useQuery(
     {slug: slug},
     {
-      refetchInterval: 5000
+      refetchInterval: 10000
     }
   );
 
@@ -64,13 +78,11 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   const requestFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: requestAuthor });
-    
-    setTimeout(() => {
-      reveal();
-      setRequestMessage("");
-      setRequestAuthor("");
-    }, 600)
+    if (requestAuthor === "") {
+      createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: "Anonymous" });
+    } else {
+      createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: requestAuthor });
+    }
     
   }
 
@@ -124,8 +136,8 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               className="flex flex-col gap-6 py-6"
               onSubmit={requestFormHandler}
             >
-              <div>
-                <label className="font-medium" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
+              <label className="font-medium" htmlFor="message">Prayer Request <span className="text-teal-600">*</span></label>
+              <div className="flex flex-col items-end justify-end">
                 <textarea 
                   rows={4}
                   className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
@@ -134,17 +146,18 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                   value={requestMessage}
                   onChange={(e) => setRequestMessage(e.target.value)}
                   required
+                  autoFocus
+                  disabled={createPrayerRequest.isLoading}
                 />
               </div>
-              <div className="flex items-center gap-5">
+              <label className="font-medium pt-4" htmlFor="name">Author (not required)</label>
+              <div className="flex flex-col md:flex-row md:items-center gap-5">
                 <div className="flex-1">
-                  <label className="font-medium" htmlFor="name">Author (not required)</label>
                   <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-teal-500" type="text" 
                       placeholder="What is your name?"
                       name="name"
                       value={requestAuthor}
                       onChange={(e) => setRequestAuthor(e.target.value)}
-                      required
                       disabled={createPrayerRequest.isLoading}
                   />
                 </div>
@@ -154,11 +167,22 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                   value="Cancel"
                   onClick={reveal}
                 />
-                <input 
-                  className="text-md p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-colors" 
+                <button 
+                  className="flex items-center justify-center text-md p-2 px-4 w-50 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-all" 
                   type="submit"
-                  value="Request Prayer"
-                />
+                  disabled={createPrayerRequest.isLoading}
+                >
+                  {!createPrayerRequest.isLoading && !createPrayerRequest.isPaused && "Request Prayer"}
+                  <LineWave 
+                    width="20"
+                    height="20"
+                    color="#E4E7EB"
+                    ariaLabel="line-wave"
+                    wrapperStyle={{}}
+                    wrapperClass="scale-[2]"
+                    visible={createPrayerRequest.isLoading}
+                  />
+                </button>
               </div>
             </form>
             :
@@ -176,7 +200,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                     `Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!\nLink: ${window.location.origin}/board/${slug}\nPassword: ${data?.password}`
                   )
 
-                  toast.success("🙏 Copied invite to clipboard!");
+                  toast.success("Copied invite to clipboard! 🙏");
                 }}
               >
                 Copy Invite
@@ -189,8 +213,8 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
             orientation="horizontal"
           />
           <div className="flex flex-wrap gap-4 py-1">
-            <SelectMenu label="Sort By" options={sortByOptions} selectedValue={selectedSortByOption} onChange={setSelectedSortByOption}/>
-            <SelectMenu label="Order" options={orderOptions} selectedValue={selectedOrderOption} onChange={setSelectedOrderOption} />
+            <SelectMenu zIndex={5} label="Sort By" options={sortByOptions} selectedValue={selectedSortByOption} onChange={setSelectedSortByOption}/>
+            <SelectMenu zIndex={4} label="Order" options={orderOptions} selectedValue={selectedOrderOption} onChange={setSelectedOrderOption} />
           </div>
           <div className="flex-1 py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParentRef}>
             {data && data.prayerRequests
