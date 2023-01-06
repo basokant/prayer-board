@@ -19,7 +19,7 @@ const Custom404: NextPage = () => {
         <Navbar />
         <div className="flex flex-col item-center justify-center flex-1 p-10 lg:px-20">
           <h1 className="text-5xl md:text-6xl font-bold text-teal-600">404 Error</h1>
-          <h3 className="text-xl">Praying that you find what you're looking for! 🙏</h3>
+          <h3 className="text-xl">Praying that you find what you&apos;re looking for! 🙏</h3>
         </div>
         <Footer />
       </Layout>

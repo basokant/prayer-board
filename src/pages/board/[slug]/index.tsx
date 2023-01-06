@@ -1,11 +1,7 @@
-import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 
 import TimeAgo from 'javascript-time-ago'
-
 import en from 'javascript-time-ago/locale/en.json'
-
 TimeAgo.addDefaultLocale(en)
 
 import Navbar from "../../../components/Navbar";
@@ -202,6 +198,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
             })
             .map((prayerRequest) => (
               <RequestCard 
+                key={prayerRequest.id}
                 id={prayerRequest.id}
                 message={prayerRequest.message}
                 author={prayerRequest.author}
@@ -216,10 +213,9 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
       </Layout>
     </>
   );
-};
+}
 
-export async function getServerSideProps(context: GetServerSidePropsContext<{ slug: string }>,
-) {
+export async function getServerSideProps(context: GetServerSidePropsContext<{ slug: string }>) {
   const slug = context?.params?.slug;
 
   if (!slug) {

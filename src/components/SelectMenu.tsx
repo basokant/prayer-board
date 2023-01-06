@@ -49,7 +49,7 @@ export default function SelectMenu({label, options, onChange, selectedValue}: Se
               leave="transition ease-in duration-100"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
-              className="absolute mt-1 w-full rounded-md bg-white shadow-lg"
+              className="absolute mt-1 w-full rounded-md bg-gray-700 shadow-lg"
             >
               <Listbox.Options
                 static
@@ -61,8 +61,8 @@ export default function SelectMenu({label, options, onChange, selectedValue}: Se
                       <div
                         className={`${
                           active
-                            ? "text-white bg-teal-600"
-                            : "text-gray-800"
+                            ? "text-gray-100 bg-teal-600"
+                            : "text-gray-100"
                         } cursor-default select-none relative py-2 pl-8 pr-4`}
                       >
                         <span
@@ -75,7 +75,7 @@ export default function SelectMenu({label, options, onChange, selectedValue}: Se
                         {selected && (
                           <span
                             className={`${
-                              active ? "text-white" : "text-blue-600"
+                              active ? "text-gray-100" : "text-teal-600"
                             } absolute inset-y-0 left-0 flex items-center pl-1.5`}
                           >
                             <svg

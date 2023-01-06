@@ -1,7 +1,7 @@
 // components/Layout/index.js
 
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <motion.div

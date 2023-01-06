@@ -1,4 +1,4 @@
-const slugify = (str: String)=>
+const slugify = (str: string)=>
   str
     .toLowerCase()
     .trim()
