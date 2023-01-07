@@ -19,6 +19,14 @@ const Home: NextPage = () => {
         <meta name="og:description" content={`Everyone needs prayer. Create a community of prayer. Create a PrayerBoard.`} />
         <meta name="og:image" content="https://prayerboard.app/ogimage.png" />
         <meta name="og:url" content={`https://prayerboard.app`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@BAsokanthan" />
+        <meta name="twitter:title" content={`PrayerBoard`} />
+        <meta name="twitter:description" content={`Everyone needs prayer. Create a community of prayer. Create a PrayerBoard.`} />
+        <meta name="twitter:image" content="https://prayerboard.app/ogimage.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

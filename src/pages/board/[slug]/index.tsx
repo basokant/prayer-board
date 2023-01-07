@@ -113,11 +113,19 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     <>
       <Head>
         <title>{data?.name} | PrayerBoard</title>
-        <meta name="description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
-        <meta name="og:title" content={`${data?.name} | PrayerBoard`} />
-        <meta name="og:description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
-        <meta name="og:image" content="https://prayerboard.app/ogimage.png" />
+        <meta property="description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
+        <meta property="og:title" content={`${data?.name} | PrayerBoard`} />
+        <meta property="og:description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
+        <meta property="og:image" content="https://prayerboard.app/ogimage.png" />
         <meta name="og:url" content={`https://prayerboard.app/board/${slug}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@BAsokanthan" />
+        <meta name="twitter:title" content={`${data?.name} | PrayerBoard`} />
+        <meta name="twitter:description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
+        <meta name="twitter:image" content="https://prayerboard.app/ogimage.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

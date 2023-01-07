@@ -14,9 +14,17 @@ const Custom404: NextPage = () => {
         <title>404 Page | PrayerBoard</title>
         <meta name="description" content="404" />
         <meta name="og:title" content={`404 | PrayerBoard`} />
-        <meta name="og:description" content={`404`} />
+        <meta name="og:description" content={`404 Error`} />
         <meta name="og:image" content="https://prayerboard.app/ogimage.png" />
         <meta name="og:url" content={`https://prayerboard.app/404`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@BAsokanthan" />
+        <meta name="twitter:title" content={`404 | PrayerBoard`} />
+        <meta name="twitter:description" content={`404 Error`} />
+        <meta name="twitter:image" content="https://prayerboard.app/ogimage.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

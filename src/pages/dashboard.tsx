@@ -40,6 +40,14 @@ const Dashboard: NextPage = () => {
         <meta name="og:description" content={`Visit your PrayerBoards, and find new ones too!`} />
         <meta name="og:image" content="https://prayerboard.app/ogimage.png" />
         <meta name="og:url" content={`https://prayerboard.app/dashboard`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@BAsokanthan" />
+        <meta name="twitter:title" content={`Dashboard | PrayerBoard`} />
+        <meta name="twitter:description" content={`Visit your PrayerBoards, and find new ones too!`} />
+        <meta name="twitter:image" content="https://prayerboard.app/ogimage.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
