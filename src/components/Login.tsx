@@ -25,6 +25,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       className="px-16 flex flex-col justify-center"
     >
       <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">

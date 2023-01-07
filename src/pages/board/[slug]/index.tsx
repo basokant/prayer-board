@@ -121,11 +121,29 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
         <div className="flex-1 lg:px-36 xl:px-42 px-7 pb-10 flex flex-col justify-center">
         <AnimatePresence>
           {
+            !loggedIn && data && (
+            <Login
+              key="login"
+              name={data.name}
+              slug={slug}
+              numRequests={data.prayerRequests.length}
+              numMembers={data.numVisits}
+              onLogin={(password) => {
+                setLoggedIn(true);
+                setPassword(password);
+                boardQuery.refetch();
+              }}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {
             loggedIn &&
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, height: 0, flex: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0 }}
+                transition={{ delay: 0.4 }}
                 key="boardPage"
                 ref={boardParent}
               >
@@ -235,23 +253,6 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               </div>
               </motion.div>
           }
-          </AnimatePresence>
-          <AnimatePresence>
-            {
-              !loggedIn && data && (
-              <Login
-                key="login"
-                name={data.name}
-                slug={slug}
-                numRequests={data.prayerRequests.length}
-                numMembers={data.numVisits}
-                onLogin={(password) => {
-                  setLoggedIn(true);
-                  setPassword(password);
-                  boardQuery.refetch();
-                }}
-              />
-            )}
           </AnimatePresence>
         </div>
         <div>
