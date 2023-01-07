@@ -26,7 +26,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="px-16 flex flex-col justify-center"
+      className="sm:px-5 md:px-16 flex flex-col justify-center"
     >
       <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
         <BoardCard slug={slug} name={name} numRequests={numRequests} numVisits={numMembers} />
@@ -34,7 +34,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
       <div className="flex items-center gap-5">
         <div className="flex-1">
           <label htmlFor="BoardName">Board Password <span className="text-teal-500">*</span></label>
-          <div className="flex flex-1 items-center gap-5">
+          <div className="flex flex-col md:flex-row flex-1 md:items-center gap-5">
             <input className="flex-1 p-3 px-4 rounded-md border-0 bg-gray-700 focus:outline-teal-500" id="BoardPassword" name="BoardPassword"
               type="password" 
               placeholder="A password for the board to be used by the community." required
