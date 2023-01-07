@@ -1,9 +1,9 @@
 import Link from "next/link"
 import { useState } from "react";
 
-import LogoMark from "../../public/logomark.svg"
-
 import ReactTimeAgo from 'react-time-ago';
+import { Tooltip } from "react-tooltip";
+import 'react-tooltip/dist/react-tooltip.css'
 
 import { trpc } from "../utils/trpc";
 
@@ -32,6 +32,8 @@ const RequestCard = ({ id, message, author, numPrayedFor, date, refetch }: Reque
         </div>
         <button
           className="flex items-center gap-2 bg-teal-700 hover:bg-teal-600 disabled:bg-teal-900 disabled:cursor-not-allowed p-1 px-3 text-slate-50 font-semibold rounded-lg transition-colors"
+          id="pray-for-button"
+          data-tooltip-delay-show={500}
           onClick={() => {
             if (!prayedFor) {
               prayForRequest.mutate({ id });
@@ -45,6 +47,12 @@ const RequestCard = ({ id, message, author, numPrayedFor, date, refetch }: Reque
           </svg>
           {numPrayedFor}
         </button>
+        <Tooltip 
+          anchorId="pray-for-button" content="Pray for" place="bottom" 
+          style={{
+            backgroundColor: "#374151"
+          }}
+        />
       </div>
     </div>
   )

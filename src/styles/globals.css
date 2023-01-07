@@ -167,6 +167,16 @@
   }
 }
 
+:root {
+  --rt-color-white: theme(colors.gray.300);
+  --rt-color-dark: theme(colors.gray.700);
+  --rt-color-success: theme(colors.teal.700);
+  --rt-color-error: #be6464;
+  --rt-color-warning: #f0ad4e;
+  --rt-color-info: theme(colors.cyan.700);
+  --rt-opacity: 0.9;
+}
+
 /*
   1. Use a more-intuitive box-sizing model.
 */
