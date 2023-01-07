@@ -58,7 +58,7 @@ const Dashboard: NextPage = () => {
             <h2 className="text-xl md:text-2xl text-teal-600 font-semibold italic">Joined</h2>
             <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
               {joinedBoards?.map((board) => 
-                <BoardCard key={board.slug} name={board.name} slug={board.slug} numRequests={board._count.prayerRequests} numVisits={0}/>
+                <BoardCard key={board.slug} name={board.name} slug={board.slug} numRequests={board._count.prayerRequests} numVisits={board.numVisits}/>
               )}
             </div>
           </div>
