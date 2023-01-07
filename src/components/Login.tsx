@@ -34,7 +34,22 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
       <div className="flex items-center gap-5">
         <div className="flex-1">
           <label htmlFor="BoardName">Board Password <span className="text-teal-500">*</span></label>
-          <div className="flex flex-col md:flex-row flex-1 md:items-center gap-5">
+          <form className="flex flex-col md:flex-row flex-1 md:items-center gap-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              login.mutate({slug, password}, {
+                onSuccess: () => {
+                  const joinedBoards = JSON.parse(joined);
+                  if (!(slug in joinedBoards)) {
+                    console.log(joinedBoards);
+                    joinedBoards[slug] = true;
+                    setJoined(JSON.stringify(joinedBoards));
+                  }
+                  onLogin(password);
+                }
+              })
+            }}
+          >
             <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" id="BoardPassword" name="BoardPassword"
               type="password" 
               placeholder="A password for the board to be used by the community." required
@@ -45,21 +60,8 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
               className="text-lg p-2 px-4 bg-cyan-800 text-cyan-50 rounded-full outline-teal-500 hover:bg-cyan-700 transition-color" 
               type="submit"
               value="Login"
-              onClick={() => {
-                login.mutate({slug, password}, {
-                  onSuccess: () => {
-                    const joinedBoards = JSON.parse(joined);
-                    if (!(slug in joinedBoards)) {
-                      console.log(joinedBoards);
-                      joinedBoards[slug] = true;
-                      setJoined(JSON.stringify(joinedBoards));
-                    }
-                    onLogin(password);
-                  }
-                })
-              }}
             />
-          </div>
+          </form>
         </div>
       </div>
     </motion.div>

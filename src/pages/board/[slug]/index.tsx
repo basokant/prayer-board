@@ -84,7 +84,6 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
     } else {
       createPrayerRequest.mutate({ boardSlug: slug, message: requestMessage, author: requestAuthor });
     }
-    
   }
 
   useEffect(() => {
