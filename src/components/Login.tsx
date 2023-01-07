@@ -28,7 +28,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
       className="px-16 flex flex-col justify-center"
     >
       <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <BoardCard slug={slug} name={name} numRequests={numRequests} numMembers={numMembers} />
+        <BoardCard slug={slug} name={name} numRequests={numRequests} numVisits={numMembers} />
       </div>
       <div className="flex items-center gap-5">
         <div className="flex-1">

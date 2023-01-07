@@ -23,7 +23,7 @@ export const prayerBoardRouter = router({
                 select: {
                     slug: true,
                     name: true,
-                    numMembers: true,
+                    numVisits: true,
                     _count: {
                         select: { prayerRequests: true }
                     },
@@ -49,7 +49,7 @@ export const prayerBoardRouter = router({
                 select: {
                     slug: true,
                     name: true,
-                    numMembers: true,
+                    numVisits: true,
                     _count: {
                         select: { prayerRequests: true }
                     }
@@ -127,12 +127,12 @@ export const prayerBoardRouter = router({
                     slug: input.slug,
                 },
                 data: {
-                    numMembers: {
+                    numVisits: {
                         increment: 1,
                     }
                 },
                 select: {
-                    numMembers: true,
+                    numVisits: true,
                 }
             })
         })

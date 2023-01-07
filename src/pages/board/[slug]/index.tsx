@@ -135,7 +135,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                     name={data.name}
                     slug={data.slug}
                     numRequests={data._count.prayerRequests}
-                    numMembers={data.numMembers}
+                    numVisits={data.numVisits}
                   />
                 }
               </div>
@@ -149,6 +149,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                   <div className="flex flex-col items-end justify-end">
                     <textarea 
                       rows={4}
+                      maxLength={400}
                       className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
                       placeholder="What do you need prayer for?"
                       name="message"
@@ -226,7 +227,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               </div>
               <div className="flex-1 py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParent}>
                 <RequestCards 
-                  data={data}
+                  prayerRequests={data?.prayerRequests}
                   sortBy={selectedSortByOption}
                   order={selectedOrderOption}
                   refetch={boardQuery.refetch}
@@ -243,7 +244,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                 name={data.name}
                 slug={slug}
                 numRequests={data.prayerRequests.length}
-                numMembers={data.numMembers}
+                numMembers={data.numVisits}
                 onLogin={(password) => {
                   setLoggedIn(true);
                   setPassword(password);

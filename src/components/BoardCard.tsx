@@ -4,10 +4,10 @@ type BoardProps = {
   name: string;
   slug: string;
   numRequests: number;
-  numMembers: number;
+  numVisits: number;
 }
 
-const BoardCard = ({ name, slug, numRequests, numMembers }: BoardProps) => {
+const BoardCard = ({ name, slug, numRequests, numVisits: numMembers }: BoardProps) => {
   return (
     <Link href={`/board/${slug}`} className="outline outline-1 outline-gray-800 rounded-lg focus:outline-teal-600 hover:outline-teal-600 hover:text-teal-600 transition-all">
       <div className="p-6 py-7">

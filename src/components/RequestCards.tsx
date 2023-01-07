@@ -2,31 +2,23 @@
 import RequestCard from "./RequestCard";
 
 type RequestCardsProps = {
-  data: {
-    prayerRequests: {
-        id: number;
-        message: string;
-        author: string;
-        numPrayedFor: number;
-        createdAt: Date;
-    }[];
-    _count: {
-        prayerRequests: number;
-    };
-    slug: string;
-    name: string;
-    numMembers: number;
-  } | null | undefined;
+  prayerRequests: {
+    id: number;
+    message: string;
+    author: string;
+    numPrayedFor: number;
+    createdAt: Date;
+  }[] | undefined;
   sortBy: string | undefined;
   order: string | undefined;
   refetch: () => void;
 }
 
-const RequestCards = ({data, sortBy, order, refetch}: RequestCardsProps) => {
+const RequestCards = ({prayerRequests, sortBy, order, refetch}: RequestCardsProps) => {
   return (
     <>
       {
-        data && data.prayerRequests
+        prayerRequests && prayerRequests
         .sort((a,b) => {
           if (sortBy === "Number of Prayers") {
             if (order === "Descending") {
@@ -55,7 +47,7 @@ const RequestCards = ({data, sortBy, order, refetch}: RequestCardsProps) => {
         ))
       }
       {
-        data && data.prayerRequests.length === 0 && (
+        prayerRequests?.length === 0 && (
           <span>No prayer requests yet.</span>
         )
       }
