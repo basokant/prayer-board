@@ -35,7 +35,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
         <div className="flex-1">
           <label htmlFor="BoardName">Board Password <span className="text-teal-500">*</span></label>
           <div className="flex flex-col md:flex-row flex-1 md:items-center gap-5">
-            <input className="flex-1 p-3 px-4 rounded-md border-0 bg-gray-700 focus:outline-teal-500" id="BoardPassword" name="BoardPassword"
+            <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" id="BoardPassword" name="BoardPassword"
               type="password" 
               placeholder="A password for the board to be used by the community." required
               value={password} maxLength={35}

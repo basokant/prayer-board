@@ -172,7 +172,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                     <textarea 
                       rows={4}
                       maxLength={400}
-                      className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-teal-500"
+                      className="resize-none p-5 w-[100%] h-50 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500"
                       placeholder="What do you need prayer for?"
                       name="message"
                       value={requestMessage}
@@ -185,7 +185,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                   <label className="font-medium pt-4" htmlFor="name">Author (not required)</label>
                   <div className="flex flex-col md:flex-row md:items-center gap-5">
                     <div className="flex-1">
-                      <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-teal-500" type="text" 
+                      <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" type="text" 
                           placeholder="What is your name?"
                           name="name"
                           value={requestAuthor}
@@ -194,7 +194,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                       />
                     </div>
                     <input 
-                      className="text-md p-2 px-4 bg-transparent text-cyan-500 hover:text-cyan-400 transition-colors" 
+                      className="text-md cursor-pointer p-2 px-4 rounded-full bg-transparent text-cyan-500 outline-none border-[1px] border-cyan-500 hover:border-cyan-400 hover:text-cyan-400 transition-colors" 
                       type="button"
                       value="Cancel"
                       onClick={reveal}
@@ -226,7 +226,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                     Request Prayer
                   </button>
                   <button 
-                    className="text-md p-2 px-4 text-teal-500 rounded-full outline outline-1 outline-teal-500 hover:text-teal-200 hover:outline-teal-200 transition-colors"
+                    className="text-md p-2 px-4 text-teal-500 rounded-full border-[1px] border-teal-500 hover:text-teal-200 hover:border-teal-200 transition-colors"
                     onClick={() => {
                       navigator.clipboard.writeText(
                         `Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!\nLink: ${window.location.origin}/board/${slug}\nPassword: ${password}`

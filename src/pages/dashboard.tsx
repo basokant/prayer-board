@@ -46,7 +46,7 @@ const Dashboard: NextPage = () => {
         <Navbar />
         <div className="flex-1 flex align-center py-10 justify-around px-5 md:lg-40 lg:px-52 flex-col gap-7">
 
-          <div className="outline outline-1 outline-gray-800 p-6 px-10 rounded-lg">
+          <div className="lg:border-[1px] border-gray-800 p-3 md:p-6 lg:px-10 rounded-lg">
             <h2 className="text-xl md:text-2xl text-teal-600 font-semibold italic">Joined</h2>
             <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
               {joinedBoards?.map((board) => 
@@ -54,10 +54,10 @@ const Dashboard: NextPage = () => {
               )}
             </div>
           </div>
-          <div className="outline outline-1 outline-gray-800 p-6 px-10 flex-1 rounded-lg">
+          <div className="lg:border-[1px] border-gray-800 p-3 md:p-6 lg:px-10 flex-1 rounded-lg">
             <h2 className="text-xl md:text-2xl text-cyan-600 font-semibold italic">Find a Board</h2>
             <div className="py-5">
-              <input className="p-3 mb-3 px-4 w-[100%] rounded-md border-none bg-gray-800 active:outline-teal-500" id="search" name="search" type="text" 
+              <input className="p-3 mb-3 px-4 w-[100%] rounded-md bg-gray-800 focus:border-[1px] focus:border-teal-500 focus:outline-none" id="search" name="search" type="text" 
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

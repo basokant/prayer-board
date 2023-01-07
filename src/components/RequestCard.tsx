@@ -24,7 +24,7 @@ const RequestCard = ({ id, message, author, numPrayedFor, date, refetch }: Reque
   const [prayedFor, setPrayedFor] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col p-7 outline-gray-800 outline outline-1 rounded-xl">
+    <div className="flex flex-col p-7 border-gray-800 border-[1px] rounded-xl">
       <p className="flex-1 pb-3">{message}</p>
       <div className="flex items-center">
         <div className="flex-1">
