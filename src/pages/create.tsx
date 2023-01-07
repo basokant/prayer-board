@@ -86,7 +86,7 @@ const CreateBoard: NextPage = () => {
               type="text" 
               placeholder="What's the name of your community?" required autoFocus
               value={boardName} minLength={6} maxLength={35}
-              pattern="[0-9a-fA-F]{6,35}"
+              pattern="[0-9a-zA-Z]{6,35}"
               onChange={(e) => setBoardName(e.target.value)}
             />
             <label htmlFor="CreateBoardName">Board Password <span className="text-teal-500">*</span> (6-35 alphanumeric)</label>
@@ -96,7 +96,7 @@ const CreateBoard: NextPage = () => {
               type="password" 
               placeholder="A password for the board to be used by the community." required
               value={boardPassword} minLength={6} maxLength={35}
-              pattern="[0-9a-fA-F]{6,35}"
+              pattern="[0-9a-zA-Z]{6,35}"
               onChange={(e) => setBoardPassword(e.target.value)}
             />
             <div className="flex justify-end my-4">

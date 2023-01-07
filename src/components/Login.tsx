@@ -50,9 +50,11 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
               })
             }}
           >
-            <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" id="BoardPassword" name="BoardPassword"
+            <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" 
+              id={`${slug}-BoardPassword`} 
+              name={`${slug}-BoardPassword`}
               type="password" 
-              placeholder="A password for the board to be used by the community." required
+              placeholder="Enter the password." required
               value={password} maxLength={35}
               onChange={(e) => setPassword(e.target.value)}
             />
