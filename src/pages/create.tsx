@@ -58,7 +58,7 @@ const CreateBoard: NextPage = () => {
         <meta name="description" content="Create a PrayerBoard: a place for your community of prayer." />
         <meta name="og:title" content={`Create a Board | PrayerBoard`} />
         <meta name="og:description" content={`Create a PrayerBoard: a place for your community of prayer.`} />
-        <meta name="og:image" content="/og-image.png" />
+        <meta name="og:image" content="https://prayerboard.app/ogimage.png" />
         <meta name="og:url" content={`https://prayerboard.app/create`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
