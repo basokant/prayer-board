@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import BoardCard from "./BoardCard";
 
 import { trpc } from "..//utils/trpc";
+import { motion } from "framer-motion";
+import { useLocalStorage } from "usehooks-ts";
 
 type LoginProps = {
   name: string;
@@ -16,8 +18,16 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
 
   const login = trpc.prayerBoard.authenticate.useMutation()
 
+  const [joined, setJoined] = useLocalStorage('joinedBoards', JSON.stringify({}));
+
   return (
-    <div className="flex-1 flex flex-col justify-center lg:px-36 xl:px-42 px-7 p-10">
+    <motion.div
+      key="login"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="px-16 flex flex-col justify-center"
+    >
       <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
         <BoardCard slug={slug} name={name} numRequests={numRequests} numMembers={numMembers} />
       </div>
@@ -37,16 +47,21 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
               value="Login"
               onClick={() => {
                 login.mutate({slug, password}, {
-                  onSuccess: (data) => {
+                  onSuccess: () => {
+                    const joinedBoards = JSON.parse(joined);
+                    if (!(slug in joinedBoards)) {
+                      console.log(joinedBoards);
+                      joinedBoards[slug] = true;
+                      setJoined(JSON.stringify(joinedBoards));
+                    }
                     onLogin(password);
                   }
                 })
               }}
-            >
-            </input>
+            />
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

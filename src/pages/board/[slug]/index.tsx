@@ -8,16 +8,18 @@ import { Toaster, toast } from 'react-hot-toast';
 import { LineWave } from 'react-loader-spinner';
 
 import Navbar from "../../../components/Navbar";
-import Footer from "../../../components/Footer";
-import RequestCard from "../../../components/RequestCard";
-import BoardCard from "../../../components/BoardCard";
 import Layout from "../../../components/Layout";
+import BoardCard from "../../../components/BoardCard";
 import SelectMenu from "../../../components/SelectMenu";
+import RequestCards from "../../../components/RequestCards";
 import Login from "../../../components/Login";
+import Footer from "../../../components/Footer";
 
 import * as Separator from '@radix-ui/react-separator';
 import React, { useEffect, useRef, useState } from "react";
 import autoAnimate from "@formkit/auto-animate";
+import { AnimatePresence } from "framer-motion";
+import { useLocalStorage } from 'usehooks-ts';
 
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
@@ -29,8 +31,7 @@ import { trpc } from "../../../utils/trpc";
 const sortByOptions = ["Time Created", "Number of Prayers"];
 const orderOptions = ["Descending", "Ascending"];
 
-export default function Board(props: InferGetServerSidePropsType<typeof getServerSideProps>,
-) {
+export default function Board(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { slug } = props;
 
   const createPrayerRequest = trpc.prayerRequest.create.useMutation(
@@ -54,7 +55,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   const boardQuery = trpc.prayerBoard.bySlug.useQuery(
     {slug: slug},
     {
-      refetchInterval: 10000
+      refetchInterval: 15000
     }
   );
   const login = trpc.prayerBoard.authenticate.useMutation()
@@ -70,15 +71,10 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
 
-  const parentRef = useRef(null);
-  const requestsParentRef = useRef(null);
+  const [requestsParent] = useAutoAnimate();
+  const [boardParent] = useAutoAnimate();
 
   const reveal = () => setShowRequestForm(!showRequestForm);
-
-  useEffect(() => {
-    parentRef.current && autoAnimate(parentRef.current);
-    requestsParentRef.current && autoAnimate(requestsParentRef.current);
-  }, [parentRef, requestsParentRef])
 
   const requestFormHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,21 +118,10 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
       </Head>
       <Layout>
         <Navbar />
-        {
-          !loggedIn ?
-          data &&
-          <Login
-            name={data.name}
-            slug={data.slug}
-            numRequests={data._count.prayerRequests}
-            numMembers={data.numMembers}
-            onLogin={(password: string) => {
-              setPassword(password);
-              setLoggedIn(true);
-            }}
-          />
-          :
-          <div className="flex-1 lg:px-36 xl:px-42 px-7 pb-10" ref={parentRef}>
+        <div className="flex-1 lg:px-36 xl:px-42 px-7 pb-10 flex flex-col justify-center">
+          {
+            loggedIn &&
+            <div ref={boardParent}>
             <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5">
               { data &&
                 <BoardCard 
@@ -147,7 +132,6 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                 />
               }
             </div>
-
             {
               showRequestForm ?
               <form 
@@ -217,7 +201,6 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                     navigator.clipboard.writeText(
                       `Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!\nLink: ${window.location.origin}/board/${slug}\nPassword: ${password}`
                     )
-
                     toast.success("Copied invite to clipboard! 🙏");
                   }}
                 >
@@ -234,42 +217,33 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
               <SelectMenu zIndex={5} label="Sort By" options={sortByOptions} selectedValue={selectedSortByOption} onChange={setSelectedSortByOption}/>
               <SelectMenu zIndex={4} label="Order" options={orderOptions} selectedValue={selectedOrderOption} onChange={setSelectedOrderOption} />
             </div>
-            <div className="flex-1 py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParentRef}>
-              {data && data.prayerRequests
-              .sort((a,b) => {
-                if (selectedSortByOption === "Number of Prayers") {
-                  if (selectedOrderOption === "Descending") {
-                    return b.numPrayedFor - a.numPrayedFor;
-                  } else {
-                    return a.numPrayedFor - b.numPrayedFor;
-                  }
-                } else {
-                  if (selectedOrderOption === "Descending") {
-                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                  } else {
-                    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-                  }
-                }
-              })
-              .map((prayerRequest) => (
-                <RequestCard 
-                  key={prayerRequest.id}
-                  id={prayerRequest.id}
-                  message={prayerRequest.message}
-                  author={prayerRequest.author}
-                  numPrayedFor={prayerRequest.numPrayedFor}
-                  date={prayerRequest.createdAt}
-                  refetch={boardQuery.refetch}
-                />
-              ))}
-              {
-                data && data.prayerRequests.length === 0 && (
-                  <span>No prayer requests yet.</span>
-                )
-              }
+            <div className="flex-1 py-5 grid grid-cols-1 md:grid-cols-2 gap-5 w-[100%]" ref={requestsParent}>
+              <RequestCards 
+                data={data}
+                sortBy={selectedSortByOption}
+                order={selectedOrderOption}
+                refetch={boardQuery.refetch}
+              />
             </div>
-          </div>
-        }
+            </div>
+          }
+          <AnimatePresence>
+            {
+              !loggedIn && data && (
+              <Login
+                name={data.name}
+                slug={slug}
+                numRequests={data.prayerRequests.length}
+                numMembers={data.numMembers}
+                onLogin={(password) => {
+                  setLoggedIn(true);
+                  setPassword(password);
+                  boardQuery.refetch();
+                }}
+              />
+            )}
+          </AnimatePresence>
+        </div>
         <div>
           <Toaster 
             position="bottom-center"
@@ -296,7 +270,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext<{ slug: string }>) {
-  const slug = context?.params?.slug;
+  const slug = context?.params?.slug.replace(/\\/g, '');
 
   if (!slug) {
     return {
@@ -325,4 +299,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext<{ sl
       slug: slug,
     }
   }
+}
+
+function useAutoAnimate(options = {}) {
+  const callbackRef = React.useCallback(
+    (el: HTMLDivElement) => el instanceof HTMLDivElement && autoAnimate(el, options),
+    [options]
+  )
+  return [callbackRef]
 }

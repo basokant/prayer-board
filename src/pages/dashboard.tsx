@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocalStorage } from 'usehooks-ts';
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -18,8 +19,16 @@ const Dashboard: NextPage = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 100);
   const boards = trpc.prayerBoard.getAll.useQuery();
 
+  const [joinedBoardSlugs, setJoinedBoardSlugs] = useLocalStorage("joinedBoards", JSON.stringify({}));
+
   const filteredBoards = boards.data?.filter((board) => {
     return debouncedSearchTerm && board.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  })
+
+  console.log(joinedBoardSlugs);
+
+  const joinedBoards = boards.data?.filter((board) => {
+    return board.slug in JSON.parse(joinedBoardSlugs);
   })
 
   return (
@@ -36,7 +45,7 @@ const Dashboard: NextPage = () => {
           <div className="outline outline-1 outline-gray-800 p-6 px-10 rounded-lg">
             <h2 className="text-xl md:text-2xl text-teal-600 font-semibold italic">Joined</h2>
             <div className="py-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
-              {boards.data?.map((board) => 
+              {joinedBoards?.map((board) => 
                 <BoardCard key={board.slug} name={board.name} slug={board.slug} numRequests={board._count.prayerRequests} numMembers={0}/>
               )}
             </div>
