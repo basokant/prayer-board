@@ -13,6 +13,5 @@ export function StarsContainer() {
 
   console.log(options)
   
-  // @ts-ignore
-  return <Particles options={options} init={customInit} className="opacity-20" />;
+  return <Particles init={customInit} className="opacity-20" />;
 }

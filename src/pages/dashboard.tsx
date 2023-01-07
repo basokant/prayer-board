@@ -25,7 +25,7 @@ const Dashboard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>PrayerBoard | Dashboard</title>
+        <title>Dashboard | PrayerBoard</title>
         <meta name="description" content="Visit your PrayerBoards, and find new ones too!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

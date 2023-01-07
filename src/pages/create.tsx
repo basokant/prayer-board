@@ -54,7 +54,7 @@ const CreateBoard: NextPage = () => {
   return (
     <>
       <Head>
-        <title>PrayerBoard | Create a Board</title>
+        <title>Create a Board | PrayerBoard</title>
         <meta name="description" content="Create a PrayerBoard: a place for your community of prayer." />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>PrayerBoard | Home</title>
+        <title>PrayerBoard</title>
         <meta name="description" content="Everyone needs prayer. Create a community of prayer. Create a PrayerBoard." />
         <link rel="icon" href="/favicon.ico" />
       </Head>

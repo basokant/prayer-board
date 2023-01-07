@@ -24,7 +24,6 @@ export const prayerBoardRouter = router({
                     slug: true,
                     name: true,
                     numMembers: true,
-                    password: true,
                     _count: {
                         select: { prayerRequests: true }
                     },
@@ -103,7 +102,7 @@ export const prayerBoardRouter = router({
             })
         }),
 
-    join: publicProcedure
+    authenticate: publicProcedure
         .input(z.object({ slug: z.string(), password: z.string()} ))
         .mutation(async ({ ctx, input }) => {
             const board = await ctx.prisma.prayerBoard.findUnique({

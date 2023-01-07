@@ -11,7 +11,7 @@ const Custom404: NextPage = () => {
   return (
     <>
       <Head>
-        <title>PrayerBoard | 404 Page</title>
+        <title>404 Page | PrayerBoard</title>
         <meta name="description" content="404" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

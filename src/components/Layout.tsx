@@ -1,5 +1,4 @@
 // components/Layout/index.js
-import { StarsContainer } from "./StarsContainer";
 
 import { motion } from "framer-motion";
 import { type ReactNode } from "react";
@@ -12,7 +11,6 @@ const Layout = ({ children }: { children: ReactNode }) => (
     transition={{ duration: 0.5 }}
     className="flex flex-col justify-start min-h-screen bg-gray-900 font-Poppins text-gray-300"
   >
-    <StarsContainer/>
     {children}
   </motion.main>
 );
