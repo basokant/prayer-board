@@ -64,7 +64,7 @@ const CreateBoard: NextPage = () => {
       </Head>
       <Layout>
         <Navbar />
-        <div className="flex flex-col justify-center flex-1 sm:px-28 xl:px-[27rem]">
+        <div className="flex flex-col justify-center flex-1 px-7 sm:px-28 xl:px-[27rem]">
           {createBoard.isLoading && <div className="text-center">Loading...</div>}
           <h1 className="text-right flex-grow-1 p-3 mb-3 text-3xl md:text-4xl font-semibold rounded-lg border-4 border-slate-800">Create a Board.</h1>
           <form 
