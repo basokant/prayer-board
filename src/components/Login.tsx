@@ -22,7 +22,6 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
 
   return (
     <motion.div
-      key="login"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
