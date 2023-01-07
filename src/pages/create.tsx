@@ -56,6 +56,10 @@ const CreateBoard: NextPage = () => {
       <Head>
         <title>Create a Board | PrayerBoard</title>
         <meta name="description" content="Create a PrayerBoard: a place for your community of prayer." />
+        <meta name="og:title" content={`Create a Board | PrayerBoard`} />
+        <meta name="og:description" content={`Create a PrayerBoard: a place for your community of prayer.`} />
+        <meta name="og:image" content="/og-image.png" />
+        <meta name="og:url" content={`https://prayerboard.app/create`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
@@ -77,10 +81,10 @@ const CreateBoard: NextPage = () => {
               pattern="[0-9a-fA-F]{6,35}"
               onChange={(e) => setBoardName(e.target.value)}
             />
-            <label htmlFor="BoardName">Board Password <span className="text-teal-500">*</span> (6-35 alphanumeric)</label>
+            <label htmlFor="CreateBoardName">Board Password <span className="text-teal-500">*</span> (6-35 alphanumeric)</label>
             <input className="p-3 px-4 rounded-md border-0 bg-gray-700 focus:outline-teal-500"
-              id="BoardPassword"
-              name="BoardPassword"
+              id="CreateBoardPassword"
+              name="CreateBoardPassword"
               type="password" 
               placeholder="A password for the board to be used by the community." required
               value={boardPassword} minLength={6} maxLength={35}

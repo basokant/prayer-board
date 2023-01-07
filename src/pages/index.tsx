@@ -15,6 +15,10 @@ const Home: NextPage = () => {
       <Head>
         <title>PrayerBoard</title>
         <meta name="description" content="Everyone needs prayer. Create a community of prayer. Create a PrayerBoard." />
+        <meta name="og:title" content={`PrayerBoard`} />
+        <meta name="og:description" content={`Everyone needs prayer. Create a community of prayer. Create a PrayerBoard.`} />
+        <meta name="og:image" content="/og-image.png" />
+        <meta name="og:url" content={`https://prayerboard.app`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

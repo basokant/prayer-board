@@ -13,6 +13,10 @@ const Custom404: NextPage = () => {
       <Head>
         <title>404 Page | PrayerBoard</title>
         <meta name="description" content="404" />
+        <meta name="og:title" content={`404 | PrayerBoard`} />
+        <meta name="og:description" content={`404`} />
+        <meta name="og:image" content="/og-image.png" />
+        <meta name="og:url" content={`https://prayerboard.app/404`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>

@@ -114,6 +114,10 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
       <Head>
         <title>{data?.name} | PrayerBoard</title>
         <meta name="description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
+        <meta name="og:title" content={`${data?.name} | PrayerBoard`} />
+        <meta name="og:description" content={`Join the ${data?.name} PrayerBoard, our place for sharing prayer requests!`} />
+        <meta name="og:image" content="/og-image.png" />
+        <meta name="og:url" content={`https://prayerboard.app/board/${slug}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
