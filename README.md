@@ -4,6 +4,11 @@
 
 A virtual prayer board for communities to ask for prayer, and pray for others!
 
+## Screenshots
+
+![Home page](public/homepage-screenshot.png)
+![Board page](public/board-screenshot.png)
+
 ## Features
 
 - Allows a community to create a private PrayerBoard, just for them!
