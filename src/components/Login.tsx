@@ -4,6 +4,7 @@ import BoardCard from "./BoardCard";
 import { trpc } from "..//utils/trpc";
 import { motion } from "framer-motion";
 import { useLocalStorage } from "usehooks-ts";
+import Board from "../pages/board/[slug]";
 
 type LoginProps = {
   name: string;
@@ -36,7 +37,7 @@ export default function Login({name, slug, numRequests, numMembers, onLogin, onE
       <div className="flex items-center gap-5">
         <div className="flex-1">
           <label htmlFor="BoardName">Board Password <span className="text-teal-500">*</span></label>
-          <form className="flex flex-col md:flex-row flex-1 md:items-center gap-5"
+          <form className="flex flex-col md:flex-row flex-1 md:items-center"
             onSubmit={(e) => {
               e.preventDefault();
               login.mutate({slug, password}, {
@@ -59,7 +60,8 @@ export default function Login({name, slug, numRequests, numMembers, onLogin, onE
               })
             }}
           >
-            <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" 
+            <input type="text" id="username" name="username" value={name} className="invisible w-0 p-0 h-0" />
+            <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500 md:mr-3 md:mb-0 mb-3" 
               ref={passwordInput}
               id={`${slug}-BoardPassword`} 
               name={`${slug}-BoardPassword`}
