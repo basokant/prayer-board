@@ -21,8 +21,12 @@ const Dashboard: NextPage = () => {
 
   const [joinedBoardSlugs, setJoinedBoardSlugs] = useLocalStorage("joinedBoards", JSON.stringify({}));
 
-  const filteredBoards = boards.data?.filter((board) => {
+  let filteredBoards = debouncedSearchTerm != "" ? boards.data?.filter((board) => {
     return debouncedSearchTerm && board.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+  }) : boards.data?.slice(0, 10);
+
+  filteredBoards = filteredBoards?.sort((a,b) => {
+    return b.numVisits + b._count.prayerRequests - a.numVisits - a._count.prayerRequests;
   })
 
   console.log(joinedBoardSlugs);
