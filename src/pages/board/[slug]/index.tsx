@@ -143,6 +143,10 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                 setLoggedIn(true);
                 setPassword(password);
                 boardQuery.refetch();
+                toast.success("Logged in successfully! 🎉");
+              }}
+              onError={() => {
+                toast.error("Incorrect password. Please try again.");
               }}
             />
           )}
@@ -189,7 +193,7 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
                       disabled={createPrayerRequest.isLoading}
                     />
                   </div>
-                  <label className="font-medium pt-4" htmlFor="name">Author (not required)</label>
+                  <label className="font-medium pt-4" htmlFor="name">Name (not required)</label>
                   <div className="flex flex-col md:flex-row md:items-center gap-5">
                     <div className="flex-1">
                       <input className="p-5 py-4 w-[100%] rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" type="text" 

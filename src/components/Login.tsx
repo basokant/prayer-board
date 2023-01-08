@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BoardCard from "./BoardCard";
 
 import { trpc } from "..//utils/trpc";
@@ -11,10 +11,12 @@ type LoginProps = {
   numRequests: number;
   numMembers: number;
   onLogin: (password: string) => void;
+  onError: () => void;
 }
 
-export default function Login({name, slug, numRequests, numMembers, onLogin}: LoginProps) {
+export default function Login({name, slug, numRequests, numMembers, onLogin, onError}: LoginProps) {
   const [password, setPassword] = useState<string>("");
+  const passwordInput = useRef<any>(null);
 
   const login = trpc.prayerBoard.authenticate.useMutation()
 
@@ -46,11 +48,19 @@ export default function Login({name, slug, numRequests, numMembers, onLogin}: Lo
                     setJoined(JSON.stringify(joinedBoards));
                   }
                   onLogin(password);
+                },
+                onError: (error) => {
+                  onError();
+                  setPassword("");
+                  if (passwordInput.current !== null) {
+                    passwordInput.current?.focus()
+                  }
                 }
               })
             }}
           >
             <input className="flex-1 p-3 px-4 rounded-md bg-gray-700 outline-none focus:border-[1px] focus:border-teal-500" 
+              ref={passwordInput}
               id={`${slug}-BoardPassword`} 
               name={`${slug}-BoardPassword`}
               type="password" 
