@@ -22,7 +22,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLocalStorage } from 'usehooks-ts';
 
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { GetServerSidePropsContext, GetStaticPaths, GetStaticProps, InferGetServerSidePropsType, InferGetStaticPropsType } from 'next';
 import { createContextInner } from '../../../server/trpc/context';
 import { appRouter } from '../../../server/trpc/router/_app';
 import superjson from 'superjson';
@@ -31,7 +31,7 @@ import { trpc } from "../../../utils/trpc";
 const sortByOptions = ["Time Created", "Number of Prayers"];
 const orderOptions = ["Descending", "Ascending"];
 
-export default function Board(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Board(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const { slug } = props;
 
   const createPrayerRequest = trpc.prayerRequest.create.useMutation(
@@ -295,15 +295,23 @@ export default function Board(props: InferGetServerSidePropsType<typeof getServe
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext<{ slug: string }>) {
-  const slug = context?.params?.slug.replace(/\\/g, '');
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContextInner(),
+    transformer: superjson,
+  });
 
-  if (!slug) {
-    return {
-      notFound: true,
-    }
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      slug: params?.slug,
+    },
+    revalidate: 30
   }
+}
 
+export const getStaticPaths: GetStaticPaths = async () => {
   const ssg = await createProxySSGHelpers({
     router: appRouter,
     ctx: await createContextInner(),
@@ -311,21 +319,48 @@ export async function getServerSideProps(context: GetServerSidePropsContext<{ sl
   });
 
   const allBoards = await ssg.prayerBoard.getAll.fetch();
-  if (!allBoards.some((board) => board.slug === slug)) {
-    return {
-      notFound: true,
-    }
-  }
-
-  await ssg.prayerBoard.bySlug.prefetch( {slug: slug} );
 
   return {
-    props: {
-      trpcState: ssg.dehydrate(),
-      slug: slug,
-    }
+    paths: allBoards.map((board) => ({
+      params: {
+        slug: board.slug,
+      }
+    })),
+    fallback: true,
   }
 }
+
+// export async function getServerSideProps(context: GetServerSidePropsContext<{ slug: string }>) {
+//   const slug = context?.params?.slug.replace(/\\/g, '');
+
+//   if (!slug) {
+//     return {
+//       notFound: true,
+//     }
+//   }
+
+//   const ssg = await createProxySSGHelpers({
+//     router: appRouter,
+//     ctx: await createContextInner(),
+//     transformer: superjson,
+//   });
+
+//   const allBoards = await ssg.prayerBoard.getAll.fetch();
+//   if (!allBoards.some((board) => board.slug === slug)) {
+//     return {
+//       notFound: true,
+//     }
+//   }
+
+//   await ssg.prayerBoard.bySlug.prefetch( {slug: slug} );
+
+//   return {
+//     props: {
+//       trpcState: ssg.dehydrate(),
+//       slug: slug,
+//     }
+//   }
+// }
 
 function useAutoAnimate(options = {}) {
   const callbackRef = React.useCallback(
