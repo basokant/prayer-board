@@ -302,12 +302,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     transformer: superjson,
   });
 
+  if (params && params.slug) {
+    if (typeof params.slug !== "string") {
+      await ssg.prayerBoard.bySlug.prefetch( {slug: params.slug.join("/")} );
+    } else {
+      await ssg.prayerBoard.bySlug.prefetch( {slug: params.slug} );
+    }
+  }
+
   return {
     props: {
       trpcState: ssg.dehydrate(),
       slug: params?.slug,
     },
-    revalidate: 30
+    revalidate: 60
   }
 }
 

@@ -1,4 +1,4 @@
-import { type NextPage } from "next";
+import { GetStaticProps, InferGetStaticPropsType, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -7,13 +7,17 @@ import { useLocalStorage } from 'usehooks-ts';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-import { trpc } from "../utils/trpc";
 import BoardCard from "../components/BoardCard";
 import useDebounce from "../hooks/useDebounce";
 import Layout from "../components/Layout";
-import { Separator } from "@radix-ui/react-separator";
 
-const Dashboard: NextPage = () => {
+import { trpc } from "../utils/trpc";
+import { createProxySSGHelpers } from "@trpc/react-query/ssg";
+import { appRouter } from "../server/trpc/router/_app";
+import { createContextInner } from "../server/trpc/context";
+import superjson from 'superjson';
+
+const Dashboard: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebounce(searchTerm, 100);
@@ -90,5 +94,22 @@ const Dashboard: NextPage = () => {
     </>
   );
 };
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: await createContextInner(),
+    transformer: superjson,
+  });
+
+  await ssg.prayerBoard.getAll.prefetch();
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+    },
+    revalidate: 60
+  }
+}
 
 export default Dashboard;
